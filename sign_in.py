@@ -10,9 +10,6 @@ try:
     user = os.environ["username"]
     pwd = os.environ["password"]
     location = os.environ["location"]
-    print(user)
-    print(pwd)
-    print(location)
 except:
     print("参数不完整或错误，请检查用户名、密码和地点是否正确填写")
     exit(1)

@@ -3,7 +3,7 @@ name: Dlpu Auto Sign In
 on:
   push:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   sign_in:
@@ -25,6 +25,6 @@ jobs:
         username: ${{ secrets.username }}
         password: ${{ secrets.password }}
         location: ${{ secrets.location }} 
+        key: ${{ secrets.key }} 
       run: |
         python sign_in.py
-        python notification.py

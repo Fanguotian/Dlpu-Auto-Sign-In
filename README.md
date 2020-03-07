@@ -3,7 +3,7 @@
 
 ## 使用说明
 
-已适配最新网页，使用旧版的同学请重新Fork以更新至最新版。
+<b>已适配最新网页并修复了一些错误，使用旧版的同学请重新 Fork 以更新至最新版。</b>
 
 Fork 本仓库，然后点击你的仓库右上角的 Settings，找到 Secrets 这一项，添加三个秘密环境变量，前者在 Name 中填写，后者在 Value 中填写，冒号不需要填写
 
@@ -38,10 +38,18 @@ location ：你的地点
 
 ## 进阶操作：打卡成功时获取微信推送
 
-进入 http://sc.ftqq.com/3.version ，点击图示选项完成配置，最后修改仓库的 notification.py 文件，把“你的SCKEY”几个字改为你的SCKEY。然后 Github Actions 会自动触发，一分钟后你就能收到打卡成功的通知了。
+进入 http://sc.ftqq.com/3.version ，点击图示选项完成配置，然后在 Secrets 中添加SCKEY：
+
+Name：key
+
+Value：你的SCKEY
+
+最后修改仓库的 sign_in.py 文件，把 notification 的值改为1。然后 Github Actions 会自动触发，一分钟后你就能收到打卡成功的通知了。
 
 ![3ZBwa4.jpg](https://s2.ax1x.com/2020/02/20/3ZBwa4.jpg)
 
 ## 处理异常
 
 由于 Github 与国内的连接有时会中断，假如打卡失败（小概率事件，打卡二十次遇到一次），可以把 `.github/workflows/pythonpackage.yml` 中的 `0 1 * * *` 改为 `60 * * * *` ，杜绝失败的情况。若做了这个修改，必须把微信推送关掉，否则每小时推送一次打卡成功。
+
+1

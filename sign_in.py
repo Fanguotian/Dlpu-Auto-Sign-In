@@ -71,9 +71,13 @@ browser.find_element_by_xpath('//*[@id="item"]/ul/li[7]/div/input[2]').click()
 browser.find_element_by_xpath('//*[@id="item"]/div/button').click()
 time.sleep(5)
 browser.find_element_by_xpath('/html/body/div[2]/div[2]/span[2]').click()
-time.sleep(2)
+time.sleep(10)
 
 # 检查是否签到成功
+try:
+    browser.switch_to.alert.accept()
+except:
+    pass
 browser.get("https://www.dxever.com/fei/delete/ncp/history.html")
 browser.execute_script("""
     (function () {

@@ -36,7 +36,7 @@ options.add_argument("--disable-dev-shm-usage");
 options.add_argument("--no-sandbox");
 options.add_argument("--headless");
 browser = webdriver.Chrome(options=options)
-browser.set_window_size(1200, 2000)
+browser.set_window_size(1200, 2300)
 
 def LogIn():
     browser.get("https://www.dxever.com/fei/delete/ncp/login.html")

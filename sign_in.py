@@ -36,7 +36,6 @@ options.add_argument("--disable-dev-shm-usage");
 options.add_argument("--no-sandbox");
 options.add_argument("--headless");
 browser = webdriver.Chrome(options=options)
-browser.set_window_size(1200, 2300)
 
 def LogIn():
     browser.get("https://www.dxever.com/fei/delete/ncp/login.html")
@@ -57,7 +56,7 @@ except:
     try:
         browser.find_element_by_xpath('//*[@id="item"]/ul/li[1]/input')
     except:
-        print("用户名或密码错误")
+        print("用户名或密码错误，又或者是 Github 此时无法连接到国内")
         exit(1)
 
 # 实际上直接发送请求是最好的，根本用不到selenium，否则网页只要有一点修改就会签到失败
@@ -79,25 +78,11 @@ try:
 except:
     pass
 browser.get("https://www.dxever.com/fei/delete/ncp/history.html")
-browser.execute_script("""
-    (function () {
-        var y = 0;
-        var step = 100;
-        window.scroll(0, 0);
-        function f() {
-            if (y < document.body.scrollHeight) {
-                y += step;
-                window.scroll(0, y);
-                setTimeout(f, 10000);
-            } else {
-                window.scroll(0, 0);
-                document.title += "scroll-done";
-            }
-        }
-        setTimeout(f, 1000);
-    })();
-""")
-time.sleep(1)
+time.sleep(3)
+# 把网页拖到底
+js="var q=document.documentElement.scrollTop=100000"  
+browser.execute_script(js)
+time.sleep(3)
 
 # 使用百度 OCR API 识别签到历史网页，若网页中有“今天”两个字，说明签到成功
 # 每日5万免费调用次数
@@ -128,7 +113,7 @@ with open (r'num.png','rb') as file:
         if notification == 1:
             api = 'https://sc.ftqq.com/' + key + '.send'
             title = "签到失败"
-            content = "签到失败，请检查发生了什么。若程序有Bug，请提issues"
+            content = "签到失败，请检查是否签到成功，并查看 Github Actions 日志。若程序有Bug，请提issues"
             data = {
                "text" : title,
                "desp" : content

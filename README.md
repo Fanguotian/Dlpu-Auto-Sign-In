@@ -3,7 +3,9 @@
 
 ## 使用说明
 
-<b>已彻底解决签到成功却报失败的问题，使用旧版的同学请重新 Fork 以更新至最新版。</b>
+<b>5月5号 GitHub Actions 没有运行是因为 Github 炸了，今年炸了好多次...想要稳定运行的话还是用自己的服务器吧</b>
+
+<b>阿里云免费一年的服务器：https://developer.aliyun.com/adc/student/</b>
 
 Fork 本仓库，然后点击你的仓库右上角的 Settings，找到 Secrets 这一项，添加三个秘密环境变量，前者在 Name 中填写，后者在 Value 中填写，冒号不需要填写
 

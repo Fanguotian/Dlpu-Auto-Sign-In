@@ -1,15 +1,7 @@
 # coding=UTF-8
-from selenium import webdriver
+import requests,time,os
+from http import cookiejar
 from lxml import etree
-from aip import AipOcr
-from PIL import Image
-import requests
-import image
-import time
-import random
-import string
-import sys
-import os
 
 # 是否需要server酱微信推送
 notification = 0
@@ -24,92 +16,49 @@ try:
     pwd = os.environ["password"]
     location = os.environ["location"]
 except:
-    print("参数不完整或错误，请检查用户名、密码和地点是否正确填写")
-    exit(1)
+    print("参数不完整或错误，请检查用户名、密码和地点是否填写")
 
-# 适配 Github Actions，否则出错
-options = webdriver.ChromeOptions()
-options.add_argument('--disable-infobars')
-options.add_argument("--disable-extensions");
-options.add_argument("--disable-gpu");
-options.add_argument("--disable-dev-shm-usage");
-options.add_argument("--no-sandbox");
-options.add_argument("--headless");
-browser = webdriver.Chrome(options=options)
-
-def LogIn():
-    browser.get("https://www.dxever.com/fei/delete/ncp/login.html")
-    time.sleep(5)
-    browser.find_element_by_xpath('//*[@id="box"]/input[1]').send_keys(user)
-    browser.find_element_by_xpath('//*[@id="box"]/input[2]').send_keys(pwd)
-    browser.find_element_by_xpath('//*[@id="box"]/button').click()
-    time.sleep(5)
-
-
-LogIn()
-
-try:
-    browser.find_element_by_xpath('//*[@id="item"]/ul/li[1]/input')
-except:
-    time.sleep(5)
-    LogIn()
-    try:
-        browser.find_element_by_xpath('//*[@id="item"]/ul/li[1]/input')
-    except:
-        print("用户名或密码错误，又或者是 Github 此时无法连接到国内")
-        exit(1)
-
-# 实际上直接发送请求是最好的，根本用不到selenium，否则网页只要有一点修改就会签到失败
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[1]/input').send_keys(location)
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[2]/div/input[2]').click()
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[3]/div/input[1]').click()
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[4]/div/input[2]').click()
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[5]/div/input[3]').click()
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[6]/div/input[2]').click()
-browser.find_element_by_xpath('//*[@id="item"]/ul/li[7]/div/input[2]').click()
-browser.find_element_by_xpath('//*[@id="item"]/div/button').click()
-time.sleep(5)
-browser.find_element_by_xpath('/html/body/div[2]/div[2]/span[2]').click()
-time.sleep(10)
-
-# 检查是否签到成功
-try:
-    browser.switch_to.alert.accept()
-except:
-    pass
-browser.get("https://www.dxever.com/fei/delete/ncp/history.html")
-time.sleep(3)
-# 把网页拖到底
-js="var q=document.documentElement.scrollTop=100000"  
-browser.execute_script(js)
-time.sleep(3)
-
-# 使用百度 OCR API 识别签到历史网页，若网页中有“今天”两个字，说明签到成功
-# 每日5万免费调用次数
-APP_ID = '18692624'
-API_KEY = 'MdLFdybWVAsvea70co4BMGxW'
-SECRET_KEY = 'IKY0qvDkHGiodOHogc3PqoE07uFXt4Mt'
-client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
-
-browser.save_screenshot("num.png")
-with open (r'num.png','rb') as file:
-    image = file.read()
-    text = client.basicAccurate(image)
-    if '今天' in str(text):
+loginSession = requests.session()
+ua = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36"
+header = {
+    'User-Agent': ua,
+}
+postLoginUrl = "https://www.dxever.com/Wxminiprog/Disease/login"
+postLoginData = {
+    "studno": user,
+    "password": pwd,
+}
+loginResponse = loginSession.post(postLoginUrl, data = postLoginData, headers = header)
+if "200" in str(loginResponse.text):
+    token = str(loginResponse.text).split('"')
+    signInSession = requests.session()
+    postSignInUrl = "https://www.dxever.com/Wxminiprog/Disease/addLog"
+    postSignInData = {
+        "token": token[-2],
+        "curlocation": location,
+        "goout": "0",
+        "hp": "0",
+        "ncp": "0",
+        "isncp": "0",
+        "touchncp": "0",
+        "hubei": "0",
+        "ps": "",
+    }
+    signInResponse = signInSession.post(postSignInUrl, data = postSignInData, headers = header)
+    if "200" in str(signInResponse.content):
         print("签到成功")
         if notification == 1:
             api = 'https://sc.ftqq.com/' + key + '.send'
             title = "签到成功"
             content = "主人，签到成功啦！"
             data = {
-               "text" : title,
-               "desp" : content
+                "text" : title,
+                "desp" : content
             }
-            req = requests.post(api, data = data)
-            print("推送成功，假如没有收到推送，请检查key是否正确")
-        exit(0)
+        req = requests.post(api, data = data)
+        print("推送成功，假如没有收到推送，请检查key是否正确")
     else:
-        print("签到失败")
+        print("签到失败，可能已签到过")
         if notification == 1:
             api = 'https://sc.ftqq.com/' + key + '.send'
             title = "签到失败"
@@ -120,4 +69,5 @@ with open (r'num.png','rb') as file:
             }
             req = requests.post(api, data = data)
             print("推送成功，假如没有收到推送，请检查key是否正确")
-        exit(1)
+else:
+    print("用户名或者密码错误")

@@ -34,9 +34,9 @@ location ：你的地点
  
 最后在你的仓库内随便改点什么（比如给 README 文件删掉或者增加几个字符，行尾加空格不算）提交一下就可以手动触发一次 Github Actions ，以后每天的早上9点都会自动完成打卡
 
-在 Actions 处可以看到打卡情况，绿色的 √ 表示打卡成功，若失败，点击标题，按图示点击，会看到失败原因。
+在 Actions 处可以看到打卡情况，点击标题，按图示点击，假如发生错误会看到详情。
 
-![3ZBzJs.jpg](https://s2.ax1x.com/2020/02/20/3ZBzJs.jpg)
+![YoHhWD.jpg](https://s1.ax1x.com/2020/05/20/YoHhWD.jpg)
 
 ![3ZBjoQ.jpg](https://s2.ax1x.com/2020/02/20/3ZBjoQ.jpg)
 

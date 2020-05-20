@@ -1,6 +1,2 @@
 requests==2.22.0
-selenium==3.141.0
 lxml==4.5.0
-baidu-aip==2.2.18.0
-Pillow==7.0.0
-image==1.5.28

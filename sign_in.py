@@ -55,8 +55,8 @@ if "200" in str(loginResponse.text):
                 "text" : title,
                 "desp" : content
             }
-        req = requests.post(api, data = data)
-        print("推送成功，假如没有收到推送，请检查key是否正确")
+            req = requests.post(api, data = data)
+            print("推送成功，假如没有收到推送，请检查key是否正确")
     else:
         print("签到失败，可能已签到过")
         if notification == 1:

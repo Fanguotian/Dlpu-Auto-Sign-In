@@ -11,13 +11,17 @@ try:
 except:
     pass
 
-try:
-    user = os.environ["userName"]
-    pwd = os.environ["password"]
-    isWeekLogin = os.environ["isWeekLogin"]
-except:
-    print("参数不完整或错误，请检查用户名、密码和地点是否填写")
+# try:
+#     user = os.environ["userName"]
+#     pwd = os.environ["password"]
+#     isWeekLogin = os.environ["isWeekLogin"]
+# except:
+#     print("参数不完整或错误，请检查用户名、密码和地点是否填写")
 
+user = "1701030031"
+pwd = "Fan4761520"
+isWeekLogin = "false"
+    
 loginSession = requests.session()
 ua = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36"
 header = {

@@ -52,4 +52,4 @@ Name：key
 
 Value：你的SCKEY
 
-最后修改仓库的 sign_in.py 文件，把 notification 的值改为1。然后 Github Actions 会自动触发，一分钟后你就能收到打卡成功的通知了。
+最后修改仓库的 sign_in.py 文件，把 notification 的值改为1。然后 Github Actions 会自动触发，一分钟后你就能收到打卡成功的通知了。ok

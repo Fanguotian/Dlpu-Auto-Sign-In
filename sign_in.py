@@ -57,7 +57,7 @@ if "200" in str(loginResponse.text):
 			"XLZK_DISPLAY": "",
 			"RYLB_DISPLAY": "",
 			"MRXXDZ": "广东省阳江市阳东区北惯镇两安村7巷7号",
-			"TW": "36.5",
+			"TW": "36",
 			"XBDM": "1",
 			"JTXXDZ_DISPLAY": "广东省/阳江市/阳东区",
 			"LXDH": "13827623376",

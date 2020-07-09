@@ -68,14 +68,17 @@ if "success" in str(loginResponse.text):
     wid = json.loads(r1.text).get('data').get('WID')
     print("wid: %s" % wid)
     url = "http://xgfx.bnuz.edu.cn/xsdtfw/sys/swmxsyqxxsjapp/modules/mrbpa/getStuXx.do"
+
     d = {
         "WID": wid
     }
     data = {
         "data": d
     }
-    
-    postSignInUrl = "http://xgfx.bnuz.edu.cn/xsdtfw/sys/xsyqxxsjapp/mrbpa/saveMrbpa.do"
+
+    # signInSession = requests.session()
+    postSignInUrl = "http://xgfx.bnuz.edu.cn/xsdtfw/sys/swmxsyqxxsjapp/modules/mrbpa/saveStuXx.do"
+
     data = {
         "ZYDM": "0103",
         "GJDQ": "156",
@@ -137,20 +140,20 @@ if "success" in str(loginResponse.text):
         "SFBGLQKSM": "",
         "TW": "36.5"
     }
+
     header = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'
     }
-
+    pd = json.dumps(data)
     postSignInData = {
-        "data": data
+        "data": pd
     }
+
     print("data: %s" % postSignInData)
-#     signInResponse = signInSession.post(postSignInUrl, data = postSignInData, headers = header)
-#     signInResponse = loginSession.post(postSignInUrl, data = postSignInData, headers = header)
     pd = json.dumps(postSignInData)
-    signInResponse = loginSession.post(postSignInUrl, data=pd, headers=header)
+    signInResponse = loginSession.post(postSignInUrl, data=postSignInData, headers=header)
     print("sign: %s" % signInResponse.text)
     if "成功" in str(signInResponse.text):
         print("签到成功")
